@@ -1,0 +1,148 @@
+﻿@using Nop.Services.Common
+@using Nop.Services
+@using Nop.Core
+@using Nop.Web.Framework.UI
+@using Nop.Plugin.Widgets.JCarousel.Domain
+@using Nop.Plugin.Widgets.JCarousel.Models.Configuration
+@model JCarouselModel
+
+
+<div class="jcarouselcard">
+    <div class="card-header with-border clearfix">
+        <div class="card-title">
+            <i class="fas fa-th-list"></i>
+            @T("Plugins.Widgets.JCarousel.Widgets")
+        </div>
+    </div>
+    <div class="card-body">
+        <button type="button" name="importexcel" class="btn bg-olive" data-toggle="modal" data-target="#importexcel-window">
+            Add Widgets
+        </button>
+        @await Html.PartialAsync("Table", new DataTablesModel
+        {
+        Name = "products-grid-widget",
+        UrlRead = new DataUrl("WidgetList", "JCarousel", new RouteValueDictionary { [nameof(Model.JCarouselWidgetSearchModel.JCarouselId)] = Model.JCarouselWidgetSearchModel.JCarouselId }),
+        UrlDelete = new DataUrl("WidgetDelete", "JCarousel", null),
+        UrlUpdate = new DataUrl("WidgetUpdate", "JCarousel", null),
+        Length = Model.JCarouselWidgetSearchModel.PageSize,
+        LengthMenu = Model.JCarouselWidgetSearchModel.AvailablePageSizes,
+        ColumnCollection = new List<ColumnProperty>
+            {
+                new ColumnProperty(nameof(WidgetJCarouselMappingModel.WidgetZoneName))
+                {
+                Title = T("Plugins.Widgets.JCarousel.WidgetZoneName").Text
+                },
+                new ColumnProperty(nameof(WidgetJCarouselMappingModel.WidgetDisplayOrder))
+                {
+                Title = T("Plugins.Widgets.JCarousel.WidgetDisplayOrder").Text,
+                Width = "150",
+                ClassName = NopColumnClassDefaults.CenterAll,
+                Editable = true,
+                EditType = EditType.Number
+                },
+                new ColumnProperty(nameof(WidgetJCarouselMappingModel.Id))
+                {
+                Title = T("Plugins.Widgets.JCarousel.Edit").Text,
+                Width = "200",
+                ClassName =  NopColumnClassDefaults.Button,
+                Render = new RenderButtonsInlineEdit()
+                },
+                new ColumnProperty(nameof(WidgetJCarouselMappingModel.Id))
+                {
+                Title = T("Plugins.Widgets.JCarousel.Delete").Text,
+                Width = "100",
+                Render = new RenderButtonRemove(T("Plugins.Widgets.JCarousel.Delete").Text),
+                ClassName = NopColumnClassDefaults.Button
+                }
+            }
+       })
+    </div>
+</div>
+
+<div id="importexcel-window" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="importexcel-window-title">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="importexcel-window-title">@T("Plugins.Widgets.JCarousel.Edit")</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="form-horizontal">
+                <div class="modal-body">
+                    <div class="card-body">
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="WidgetId" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-select asp-for="WidgetId" class="widget_chosen" asp-items="@await (((WidgetZoneType)Model.WidgetId).ToSelectListAsync())" />
+                                <span asp-validation-for="WidgetId"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="WidgetDisplayOrder" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="WidgetDisplayOrder" />
+                                <span asp-validation-for="WidgetDisplayOrder"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer update_wraper">
+                    <button type="submit" name="save" class="btn btn-primary update_button">
+                        @T("Plugins.Widgets.JCarousel.Update")
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"> @T("Plugins.Widgets.JCarousel.Cancel")</span>
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" asp-location="Footer">
+    $(document).ready(function () {
+
+        var wrapper = $('.update_wraper');
+        //Once remove button is clicked
+        $(wrapper).on('click', '.update_button', function(e){
+            e.preventDefault();
+
+            var WidgetId = $(".widget_chosen").find("option:selected").val();
+            var ordervalue = $('#WidgetDisplayOrder').val();
+            var Mainid = "@Model.Id";
+            $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "@(Url.Action("EnterWidgetData", "JCarousel"))",
+                    data: {
+                           jcarouselId: Mainid,
+                           widgetId: WidgetId,
+                           order: ordervalue,
+                          },
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    success: function (response) {
+                        $('.modal').each(function () {
+                            $(this).modal('hide');
+                        });
+                    },
+                    error: function (xhr) {
+                          alert('Widget already selected');
+                    }
+            });
+
+            setInterval(function () {
+                location.reload();
+            }, 3000);
+        });
+    });
+</script>

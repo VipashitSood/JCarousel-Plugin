@@ -1,0 +1,79 @@
+.jcarousel-list .item-box {
+    width: 100% !important;
+}
+
+#jcarousel-form .label-wrapper {
+    float: right;
+    display: flex;
+    align-items: flex-start;
+}
+
+    #jcarousel-form .label-wrapper .col-form-label {
+        text-align: right;
+        flex-grow: 2;
+    }
+
+    #jcarousel-form .label-wrapper .ico-help {
+        color: #3c8dbc;
+        font-size: 1.17em;
+        padding-left: 6px;
+        padding-top: .28em;
+    }
+
+form#jcarousel-form div#products-grid-widget_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner {
+    width: 100% !important;
+}
+
+form#jcarousel-form div#products-grid-widget_wrapper table.table.table-bordered.table-hover.table-striped.dataTable.no-footer {
+    width: 100% !important;
+}
+
+span.required {
+    color: #ff2e2e;
+    margin-left: 6px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.jcarouselcard {
+    margin-right: 7.5px;
+    margin-left: 7.5px;
+    margin-bottom: 10px;
+    border-top: 3px solid #00c0ef;
+    border-radius: .25rem;
+    background-color: #fff;
+    color: #444;
+    border-bottom: 1px solid #f4f4f4;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
+}
+
+    .jcarouselcard .card-title {
+        font-size: 20px;
+        font-weight: 400;
+    }
+
+    .jcarouselcard .card-header {
+        border-bottom: 1px solid #f4f4f4;
+    }
+.html-home-page .home-page .page-body .product-grid .title {
+    text-align: left;
+    border: none;
+    display: inline-block;
+}
+.html-home-page .home-page .page-body .product-grid .title strong {
+    font-weight: 800;
+    font-size: 2.25rem;
+    color: #0f121b;
+}
+.html-home-page .home-page .page-body .product-grid .view-all-wrapper .view-btn {
+    display: inline-block;
+    float: right;
+    border: 1px solid #d9d9d9;
+    padding: 5px 25px 5px 8px;
+    border-radius: 4px;
+}
+.html-home-page .home-page .page-body .product-grid .view-all-wrapper .view-btn a {
+    color: #f0862e;
+    font-weight: 700;
+    text-transform: capitalize;
+}
